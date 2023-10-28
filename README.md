@@ -5,7 +5,9 @@ application up and running.
 
 Things you may want to cover:
 
-* Ruby version
+* Ruby version -3.0.0
+
+* Rails Version -7.0.8
 
 * System dependencies
 
@@ -23,3 +25,5 @@ Things you may want to cover:
 
 * ...
 # excel_upload_app
+
+rails generate model User first_name:string last_name:string email:string
