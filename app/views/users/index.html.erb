@@ -1,0 +1,13 @@
+<div class="import-section">
+  <%= form_with url: import_users_path, method: :post do |form| %>
+    <%= form.file_field :file, accept: ".xlsx" %>
+    <%= form.button "Import", class: "btn-primary" %>
+  <% end %>
+</div>
+
+<div class="flash-notice" style="color: green">
+  <p><%= notice %></p>
+</div>
+
+<%= render partial: 'import_result', locals: { result: @result } if @result.present? %>
+<%= render partial: 'display_users', locals: { users: @users } if @users.present? %>
