@@ -27,3 +27,6 @@ Things you may want to cover:
 # excel_upload_app
 
 rails generate model User first_name:string last_name:string email:string
+
+![Screenshot from 2023-10-29 23-05-19](https://github.com/sundayrkb/excel_upload_app/assets/16664573/ed4185e5-1187-43d3-a242-1b7ef7772300)
+
