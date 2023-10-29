@@ -13,3 +13,45 @@
  *= require_tree .
  *= require_self
  */
+
+ .import-section {
+  margin-bottom: 20px;
+}
+
+.btn-primary {
+  background-color: #4caf50;
+  color: white;
+  padding: 10px 15px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.flash-notice {
+  margin-bottom: 20px;
+  padding: 10px;
+  border: 1px solid #4caf50;
+  background-color: #dff0d8;
+  border-radius: 5px;
+  font-weight: bold;
+}
+
+.result {
+  margin-top: 20px;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.result h3 {
+  color: #4caf50;
+}
+
+.result ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+.result li {
+  margin-bottom: 5px;
+}
