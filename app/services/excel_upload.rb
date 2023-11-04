@@ -9,19 +9,19 @@ class ExcelUpload
   def process
     spreadsheet = Roo::Spreadsheet.open(@file.path)
 
-    @total_rows = spreadsheet.last_row - 1 # remove the header count
+    @total_rows = spreadsheet.last_row
+    header = spreadsheet.row(1).map { |header| header.downcase.to_sym } # Convert headers to lowercase symbols
 
-    spreadsheet.each_with_index(first_name: 'FIRST_NAME', last_name: 'LAST_NAME', email: 'EMAIL_ID' ) do |row, index|
-      next if index.zero?  # Skip header
-
+    (2..@total_rows).each do |index|
+      row = Hash[header.zip(spreadsheet.row(index))]
       user = User.find_or_initialize_by(row)
-      if user.save
+      if user.update(row)
         @success_count += 1
       else
         @failures << { index: index + 1, errors: user.errors.full_messages }
       end
     end
 
-    { total_rows: @total_rows, success_count: @success_count, failures: @failures }
+    { total_rows: @total_rows-1, success_count: @success_count, failures: @failures } #removed header count
   end
 end
