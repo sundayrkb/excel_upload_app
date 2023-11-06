@@ -1,21 +1,16 @@
-<% if @result.present? %>
-  <div class="result">
-    <h3>Upload Results:</h3>
-    <p>Total User Data Rows: <%= @result["total_rows"] %></p>
-    <p>Successfully Added: <%= @result["success_count"] %></p>
-    <p>Failed: <%= @result["failures"].count %></p>
-
-    <% if @result["failures"].present? %>
-      <h3>Failure Details:</h3>
-      <ul>
-        <% @result["failures"].each do |failure| %>
-          <li>
-            Row <%= failure["index"] %>: <%= failure["errors"].join(', ') %>
-          </li>
-        <% end %>
-      </ul>
-    <% end %>
-  </div>
-<% else %>
-  <p><%= @result %></p>
-<% end %>
+<div class="result">
+  <h3>Upload Results:</h3>
+  <p>Total User Data Rows: <%= @result["total_rows"] %></p>
+  <p>Successfully Added: <%= @result["success_count"] %></p>
+  <p>Failed: <%= @result["failures"].present? ? @result["failures"].count : 0 %></p>
+  <% if @result["failures"].present? %>
+    <h3>Failure Details:</h3>
+    <ul>
+      <% @result["failures"].each do |failure| %>
+        <li>
+          Row <%= failure["index"] %>: <%= failure["errors"].join(', ') %>
+        </li>
+      <% end %>
+    </ul>
+  <% end %>
+</div>

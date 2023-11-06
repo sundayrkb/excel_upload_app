@@ -9,5 +9,9 @@
   <p><%= notice %></p>
 </div>
 
-<%= render partial: 'import_result', locals: { result: @result } if @result.present? %>
+<div class="flash-alert" style="color: red">
+  <p><%= alert %></p>
+</div>
+
+<%= render partial: 'import_result', locals: { result: @result } if @result.present? && alert.blank?%>
 <%= render partial: 'display_users', locals: { users: @users } if @users.present? %>

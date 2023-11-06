@@ -9,6 +9,14 @@ RSpec.describe UsersController, type: :controller do
   end
 
   describe 'POST #import' do
+
+    let(:file_path) { Rails.root.join('tmp', 'sample_sheet.xlsx') }
+    let(:missing_header_file_path) { Rails.root.join('tmp/missing_header.xlsx') }
+    let(:unknown_header_file_path) { Rails.root.join('tmp/unknown_header.xlsx') }
+    let(:sample_file) { fixture_file_upload(file_path, 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet') }
+    let(:missing_header_file) { fixture_file_upload(missing_header_file_path, 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet') }
+    let(:unknown_header_file) { fixture_file_upload(unknown_header_file_path, 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet') }
+
     context 'when no file is provided' do
       it 'redirects to users_path with a notice' do
         post :import
@@ -17,17 +25,30 @@ RSpec.describe UsersController, type: :controller do
       end
     end
 
-    context 'when a file is provided' do
-      let(:file_path) { Rails.root.join('tmp', 'sample_sheet.xlsx') }
-      let(:file) { fixture_file_upload(file_path, 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet') }
-
-      it 'imports users and redirects to users_path with a success notice' do
-        expect do
-          post :import, params: { file: file }
-        end.to change(User, :count)
+    context 'with missing headers' do
+      it 'redirects to users_path with an error notice' do
+        post :import, params: { file: missing_header_file }
 
         expect(response).to redirect_to(users_path)
-        expect(flash[:notice]).to eq('Users imported!')
+        expect(flash[:alert]).to match(/Missing headers: email_id/i)
+      end
+    end
+
+    context 'with unknown headers' do
+      it 'redirects to users_path with an error notice' do
+        post :import, params: { file: unknown_header_file }
+
+        expect(response).to redirect_to(users_path)
+        expect(flash[:alert]).to match(/Unknown headers: phone_no/i)
+      end
+    end
+
+    context 'with valid headers' do
+      it 'redirects to users_path with a success notice' do
+        post :import, params: { file: sample_file }
+
+        expect(response).to redirect_to(users_path)
+        expect(flash[:notice]).to match(/Users imported!/i)
       end
     end
   end

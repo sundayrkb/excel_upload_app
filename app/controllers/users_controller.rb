@@ -8,9 +8,12 @@ class UsersController < ApplicationController
     file = params[:file]
     return redirect_to users_path, notice: 'Please upload a file' if file.nil?
 
-    result = ExcelUpload.new(file).process
-    flash[:result] = result
-
-    redirect_to users_path, notice: 'Users imported!'
+    @result = ExcelUpload.new(file).process
+    flash[:result] = @result
+    if @result[:error].present?
+      redirect_to users_path, alert: @result[:error]
+    else
+      redirect_to users_path, notice: 'Users imported!'
+    end
   end
 end
