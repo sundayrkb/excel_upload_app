@@ -1,7 +1,7 @@
 class ExcelUpload
   def initialize(file)
     @file = file
-    # @success_count = 0
+    @success_count = 0
     @failures = []
     @total_rows = 0
   end
@@ -34,9 +34,13 @@ class ExcelUpload
     User.import(columns, users_to_insert, validate: true)
 
     users_to_insert.each_with_index do |user, index|
-      @failures << { index: index + 2, errors: user.errors.full_messages } if user.errors.present?
+      if user.errors.present?
+        @failures << { index: index + 2, errors: user.errors.full_messages }
+      else
+        @success_count+=1
+      end
     end
 
-    { total_rows: @total_rows-1, success_count: (@total_rows-1) - @failures.count, failures: @failures }
+    { total_rows: @total_rows-1, success_count: @success_count, failures: @failures }
   end
 end
